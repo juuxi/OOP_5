@@ -37,6 +37,8 @@ public slots:
     void answer(QString);
     void value();
     void print();
+    void change_an();
+    void change_size();
 
 private slots:
     void formRequest();

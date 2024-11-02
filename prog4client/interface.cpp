@@ -105,9 +105,6 @@ TInterface::TInterface(QWidget *parent)
     output = new QLabel(this);
     output->setGeometry(150, 350, 500, 50);
 
-    output = new QLabel(this);
-    output->setGeometry(10,200,280,25);
-
     connect(value_btn, SIGNAL(pressed()), this, SLOT(value()));
     connect(change_an_btn, SIGNAL(pressed()), this, SLOT(change_an()));
     connect(print_btn, SIGNAL(pressed()), this, SLOT(print()));
@@ -180,6 +177,24 @@ void TInterface::print()
     submit_print_btn->show();
 }
 
+void TInterface::change_an()
+{
+    output->setText("");
+    an_name->show();
+    an_re->show();
+    an_delimiter->show();
+    an_im->show();
+    submit_an_btn->show();
+}
+
+void TInterface::change_size()
+{
+    output->setText("");
+    new_size_name->show();
+    new_size_value->show();
+    submit_change_size_btn->show();
+}
+
 void TInterface::formRequest()
 {
     QString msg;
@@ -197,6 +212,16 @@ void TInterface::formRequest()
             msg << QString().setNum(PRINT_CLASSIC_REQUEST);
         else
             msg << QString().setNum(PRINT_CANONIC_REQUEST);
+    }
+    if (btn == submit_an_btn)
+    {
+        msg << QString().setNum(CHANGE_AN_REQUEST);
+        msg << an_re->text() << an_im->text();
+    }
+    if (btn == submit_change_size_btn)
+    {
+        msg << QString().setNum(CHANGE_SIZE_REQUEST);
+        msg << new_size_value->text();
     }
     emit request(msg);
 }
@@ -216,11 +241,36 @@ void TInterface::answer(QString msg)
             text += " = ";
             text += msg.right(msg.length()-p-1);
             output->setText(text);
+            x_name->hide();
+            x_re->hide();
+            x_delimiter->hide();
+            x_im->hide();
+            submit_value_btn->hide();
             break;
         case PRINT_ANSWER:
             text = "p(x) = ";
             text += msg;
             output->setText(text);
+            print_mode->hide();
+            submit_print_btn->hide();
+            break;
+        case CHANGE_ANSWER:
+            output->setText("Полином изменен");
+            new_size_name->hide();
+            new_size_value->hide();
+            submit_change_size_btn->hide();
+            a_name->hide();
+            a_re->hide();
+            a_delimiter->hide();
+            a_im->hide();
+            pos_root_name->hide();
+            pos_root_val->hide();
+            submit_change_root_btn->hide();
+            an_name->hide();
+            an_re->hide();
+            an_delimiter->hide();
+            an_im->hide();
+            submit_an_btn->hide();
             break;
         default: break;
     }
