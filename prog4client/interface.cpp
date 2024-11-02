@@ -173,6 +173,13 @@ void TInterface::value()
     submit_value_btn->show();
 }
 
+void TInterface::print()
+{
+    output->setText("");
+    print_mode->show();
+    submit_print_btn->show();
+}
+
 void TInterface::formRequest()
 {
     QString msg;
@@ -184,10 +191,13 @@ void TInterface::formRequest()
         msg << QString().setNum(VALUE_REQUEST);
         msg << x_re->text() << x_im->text();
     }
-    /*if (btn == print_classic_btn)
-        msg << QString().setNum(PRINT_CLASSIC_REQUEST);
-    if (btn == print_canonic_btn)
-        msg << QString().setNum(PRINT_CANONIC_REQUEST);*/
+    if (btn == submit_print_btn)
+    {
+        if (print_mode->currentText() == "Классический")
+            msg << QString().setNum(PRINT_CLASSIC_REQUEST);
+        else
+            msg << QString().setNum(PRINT_CANONIC_REQUEST);
+    }
     emit request(msg);
 }
 

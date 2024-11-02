@@ -38,7 +38,8 @@ void TApplication::recieve(QByteArray msg)
             answer<<QString().setNum(PRINT_ANSWER)<<s;
             break;
         case PRINT_CANONIC_REQUEST:
-            s << "aaaaaaa";
+            p.set_print_mode(EPrintModeCanonic);
+            s << p;
             answer<<QString().setNum(PRINT_ANSWER)<<s;
             break;
         default: return;
