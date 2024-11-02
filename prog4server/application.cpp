@@ -1,5 +1,4 @@
 #include "application.h"
-#include "polinom.h"
 #include "common.h"
 
 TApplication::TApplication(int argc, char *argv[])
@@ -10,15 +9,17 @@ TApplication::TApplication(int argc, char *argv[])
     comm = new TCommunicator(pars, this);
 
     connect(comm,SIGNAL(recieved(QByteArray)),this,SLOT(recieve(QByteArray)));
+
+    p.change_size(2);
+    p.change_an(2);
+    p.change_root(1, 0);
+    p.change_root(3, 1);
 }
 
 void TApplication::recieve(QByteArray msg)
 {
     QString answer, s;
-    TComplex a, b, c, x, v;
-    msg>>a>>b>>c;
-    number roots[] = {b, c};
-    TPolinom p(a, roots, 2);
+    TComplex x, v;
     int pos = msg.indexOf(separator);
     int t = msg.left(pos).toInt();
     switch (t)

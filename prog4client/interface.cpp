@@ -176,9 +176,6 @@ void TInterface::value()
 void TInterface::formRequest()
 {
     QString msg;
-    msg << QString().setNum(1) << QString().setNum(0);
-    msg << QString().setNum(2) << QString().setNum(0);
-    msg << QString().setNum(3) << QString().setNum(0);
     //msg << b_re->text() << b_im->text();
     //msg << c_re->text() << c_im->text();
     QPushButton *btn = (QPushButton*)sender();

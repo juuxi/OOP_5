@@ -5,12 +5,15 @@
 #include <QCoreApplication>
 
 #include "communicator.h"
+#include "polinom.h"
 
 class TApplication : public QCoreApplication
 {
     Q_OBJECT
 
     TCommunicator *comm;
+
+    TPolinom p;
 
 public:
 
