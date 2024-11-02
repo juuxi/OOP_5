@@ -195,6 +195,18 @@ void TInterface::change_size()
     submit_change_size_btn->show();
 }
 
+void TInterface::change_root()
+{
+    output->setText("");
+    a_name->show();
+    a_re->show();
+    a_delimiter->show();
+    a_im->show();
+    pos_root_name->show();
+    pos_root_val->show();
+    submit_change_root_btn->show();
+}
+
 void TInterface::formRequest()
 {
     QString msg;
@@ -222,6 +234,12 @@ void TInterface::formRequest()
     {
         msg << QString().setNum(CHANGE_SIZE_REQUEST);
         msg << new_size_value->text();
+    }
+    if (btn == submit_change_root_btn)
+    {
+        msg << QString().setNum(CHANGE_ROOT_REQUEST);
+        msg << a_re->text() << a_im->text();
+        msg << pos_root_val->text();
     }
     emit request(msg);
 }

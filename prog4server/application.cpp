@@ -19,8 +19,8 @@ TApplication::TApplication(int argc, char *argv[])
 void TApplication::recieve(QByteArray msg)
 {
     QString answer, s;
-    TComplex an, x, v;
-    int size;
+    TComplex an, x, v, root;
+    int size, root_pos;
     int pos = msg.indexOf(separator);
     int t = msg.left(pos).toInt();
     switch (t)
@@ -54,6 +54,14 @@ void TApplication::recieve(QByteArray msg)
             pos = msg.indexOf(separator);
             size = msg.left(pos).toInt();
             p.change_size(size);
+            answer << QString().setNum(CHANGE_ANSWER);
+            break;
+        case CHANGE_ROOT_REQUEST:
+            msg = msg.right(msg.length()-pos-1);
+            msg >> root;
+            pos = msg.indexOf(separator);
+            root_pos = msg.left(pos).toInt();
+            p.change_root(root, root_pos);
             answer << QString().setNum(CHANGE_ANSWER);
             break;
         default: return;

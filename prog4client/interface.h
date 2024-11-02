@@ -39,6 +39,7 @@ public slots:
     void print();
     void change_an();
     void change_size();
+    void change_root();
 
 private slots:
     void formRequest();
