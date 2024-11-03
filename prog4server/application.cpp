@@ -47,14 +47,20 @@ void TApplication::recieve(QByteArray msg)
             msg = msg.right(msg.length()-pos-1);
             msg >> an;
             p.change_an(an);
-            answer << QString().setNum(CHANGE_ANSWER);
+            answer << QString().setNum(CHANGE_LAST_ANSWER);
+            break;
+        case CHANGE_POL_AN_REQUEST:
+            msg = msg.right(msg.length()-pos-1);
+            msg >> an;
+            p.change_an(an);
+            answer << QString().setNum(CHANGE_POL_ANSWER);
             break;
         case CHANGE_SIZE_REQUEST:
             msg = msg.right(msg.length()-pos-1);
             pos = msg.indexOf(separator);
             size = msg.left(pos).toInt();
             p.change_size(size);
-            answer << QString().setNum(CHANGE_ANSWER);
+            answer << QString().setNum(CHANGE_LAST_ANSWER);
             break;
         case CHANGE_ROOT_REQUEST:
             msg = msg.right(msg.length()-pos-1);
@@ -62,7 +68,18 @@ void TApplication::recieve(QByteArray msg)
             pos = msg.indexOf(separator);
             root_pos = msg.left(pos).toInt();
             p.change_root(root, root_pos);
-            answer << QString().setNum(CHANGE_ANSWER);
+            answer << QString().setNum(CHANGE_LAST_ANSWER);
+            break;
+        case CHANGE_POL_ROOTS_REQUEST:
+            msg = msg.right(msg.length()-pos-1);
+            msg >> root;
+            pos = msg.indexOf(separator);
+            root_pos = msg.left(pos).toInt();
+            p.change_root(root, root_pos);
+            if (root_pos == p.get_size() - 1)
+                answer << QString().setNum(CHANGE_LAST_ANSWER);
+            else
+                answer << QString().setNum(CHANGE_POL_ANSWER);
             break;
         default: return;
     }

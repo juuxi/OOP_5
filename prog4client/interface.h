@@ -40,6 +40,7 @@ public slots:
     void change_an();
     void change_size();
     void change_root();
+    void write();
 
 private slots:
     void formRequest();

@@ -103,7 +103,7 @@ TInterface::TInterface(QWidget *parent)
     print_mode->hide();
 
     output = new QLabel(this);
-    output->setGeometry(150, 350, 500, 50);
+    output->setGeometry(150, 350, 600, 50);
 
     connect(value_btn, SIGNAL(pressed()), this, SLOT(value()));
     connect(change_an_btn, SIGNAL(pressed()), this, SLOT(change_an()));
@@ -114,7 +114,7 @@ TInterface::TInterface(QWidget *parent)
     connect(submit_an_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
     connect(submit_value_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
     connect(submit_print_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
-    connect(submit_write_btn, SIGNAL(pressed()), this, SLOT(write()));
+    connect(submit_write_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
     connect(submit_change_size_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
     connect(submit_change_root_btn, SIGNAL(pressed()), this, SLOT(formRequest()));
 }
@@ -207,6 +207,21 @@ void TInterface::change_root()
     submit_change_root_btn->show();
 }
 
+void TInterface::write()
+{
+    QString s = write_mode->text();
+    if (s == "Введите an" && a_re->text() == "")
+    {
+        output->setText("");
+        submit_write_btn->show();
+        a_name->show();
+        a_re->show();
+        a_delimiter->show();
+        a_im->show();
+        write_mode->show();
+    }
+}
+
 void TInterface::formRequest()
 {
     QString msg;
@@ -241,6 +256,32 @@ void TInterface::formRequest()
         msg << a_re->text() << a_im->text();
         msg << pos_root_val->text();
     }
+    if (btn == submit_write_btn)
+    {
+        QString s = write_mode->text();
+        int i = 0;
+        if (s == "Введите an" && a_re->text() != "")
+        {
+            msg << QString().setNum(CHANGE_POL_AN_REQUEST);
+            msg << a_re->text() << a_im->text();
+            write_mode->setText("Введите корень 1");
+            a_re->setText("");
+            a_im->setText("");
+        }
+        if (s != "Введите an")
+        {
+            s.remove(0, 15);
+            i = s.toInt();
+            msg << QString().setNum(CHANGE_POL_ROOTS_REQUEST);
+            msg << a_re->text() << a_im->text();
+            msg << QString().setNum(i-1);
+            s = "Введите корень ";
+            s += QString().setNum(i+1);
+            write_mode->setText(s);
+            a_re->setText("");
+            a_im->setText("");
+        }
+    }
     emit request(msg);
 }
 
@@ -272,23 +313,36 @@ void TInterface::answer(QString msg)
             print_mode->hide();
             submit_print_btn->hide();
             break;
-        case CHANGE_ANSWER:
-            output->setText("Полином изменен");
+        case CHANGE_POL_ANSWER:
+            a_re->setText("");
+            a_im->setText("");
+            break;
+        case CHANGE_LAST_ANSWER:
             new_size_name->hide();
             new_size_value->hide();
+            new_size_value->setText("");
             submit_change_size_btn->hide();
             a_name->hide();
             a_re->hide();
+            a_re->setText("");
             a_delimiter->hide();
             a_im->hide();
+            a_im->setText("");
             pos_root_name->hide();
             pos_root_val->hide();
+            pos_root_val->setText("");
             submit_change_root_btn->hide();
             an_name->hide();
             an_re->hide();
+            an_re->setText("");
             an_delimiter->hide();
             an_im->hide();
+            an_im->setText("");
             submit_an_btn->hide();
+            submit_write_btn->hide();
+            write_mode->hide();
+            write_mode->setText("Введите an");
+            output->setText("Полином изменен");
             break;
         default: break;
     }
